@@ -3,14 +3,8 @@ sudo: required
 services:
   - docker
 
-branches:
-  only:
-    - master
-    - branch1
-
 install:
   - docker build -t hnakamur/example .
 
 script:
-  - case $TRAVIS_BRANCH in master) project=project1;; branch1) project=project2;; esac
   - docker run hnakamur/example $project
