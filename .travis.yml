@@ -1,15 +1,16 @@
 env:
   matrix:
     secure: bpf27vKZF5cRoafd7wJgwwP6kaav+unqqZNVGxtj9P5s61w115geD46hOzwBhEPnvKkZk0qAsV9AAjG6qbgfcDewIr6vjbgzQeDjFQYvbHz0iP5i8aQaXBqD5trt/34yQ21UHv2vwomDOK0UtnevbnoiT+aXQywiFIs6rducu2EJiCPCABgDVbRYe8qvisfXNAZUcmtdnESg+es6icPslmANcoNgK8A8DcINBWb36AT+KPI/OhNlqTUWAVADylW+5UrVZEu/p7guYizUKjXRpT9srpDuWiH0d0KK2rmTCdtiw7kgftXuN3jfJzTd2J5NISCO4wbuuFiQWcWAfPKoECHpB44JwP43xy/waizPBknIkZBRrBlWfoFQdW5Fh21fjQ738327tf81w/ElTBdjyopd9JwlQayIkZqOEVp9hNaqrXb1eXuTVd6sbF/REwdKfwL+j8QaXslHMsgkz0nFN68jwaMS5yTd06nu+2wCTIl+CHe22hCBWhcot90z26jxEQth6ExIuy7pY3BlDFr5i8AI61sMz3+jA3RQQuizB0liWXw1Ux3ET7MZAyoLtasTTxOEYEuN/JZANB1tPudwZQyNCd+w5Fs2PJqfxtSwZ/aXmhO8VTKkqHrVnkRBKbkpMJNzNYez/VD7srNqjEB66dNe3jLgWR+oHquLIo7ITzU=
-
 install:
-  - sudo apt-get update
-  - sudo apt-get install apt-transport-https ca-certificates
-  - sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-  - echo "deb https://apt.dockerproject.org/repo ubuntu-precise main" | sudo tee /etc/apt/sources.list.d/docker.list
-  - sudo apt-get update
-  - sudo apt-get install docker-engine
-  - sudo docker pull ubuntu
-
+- sudo apt-get update
+- sudo apt-get install apt-transport-https ca-certificates
+- sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+- echo "deb https://apt.dockerproject.org/repo ubuntu-precise main" | sudo tee /etc/apt/sources.list.d/docker.list
+- sudo apt-get update
+- sudo apt-get install docker-engine
+- sudo docker pull ubuntu
 script:
-  - sudo docker run ubuntu date
+- sudo docker run ubuntu date
+before_install:
+- openssl aes-256-cbc -K $encrypted_97ee0964aedc_key -iv $encrypted_97ee0964aedc_iv
+  -in super_secret.txt.enc -out super_secret.txt -d
