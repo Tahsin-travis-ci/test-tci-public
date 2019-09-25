@@ -1,13 +1,10 @@
-language: python
-matrix:
+jobs:
   include:
-  - name: "3.5 Unit Test"
-    python: "3.5"
-    env: TEST_SUITE=suite_3_5_unit
-  - name: "3.5 Integration Tests"
-    python: "3.5"
-    env: TEST_SUITE=suite_3_5_integration
-  - name: "pypy Unit Tests"
-    python: "pypy"
-    env: TEST_SUITE=suite_pypy_unit
-script: ./test.py $TEST_SUITE
+    - stage: "Tests"                # naming the Tests stage
+      name: "Unit Tests"            # names the first Tests stage job
+      script: ./unit-tests
+    - script: ./integration-tests
+      name: "Integration Tests"     # names the second Tests stage job
+    - stage: deploy
+      name: "Deploy to GCP"
+      script: ./deploy
