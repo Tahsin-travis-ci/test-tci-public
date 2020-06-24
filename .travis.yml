@@ -1,10 +1,42 @@
-language: sh
+language: python # Needed to run ansible
+sudo: required
+os:
+- linux
+- linux-ppc64le
+- linux-s390
+env:
+- MAKE_TASK=buildhaproxy HAPROXY_IMAGENAME=armada-master/haproxy
+# define additional jobs that don't need to run on every architecture
+# and any other job matrix settings such as finish/failure conditions
+jobs:
+  include:
+  - os: linux
+    env: MAKE_TASK=ansibleCheck  # arch agnostic
+  - os: linux
+    env: MAKE_TASK=shellCheck  # arch agnostic
+  - os: linux
+    env: MAKE_TASK=runbash_tests  # not multi-arch yet
+  - os: linux
+    env: MAKE_TASK=buildWorkerVerification  # not multi-arch yet
+  - os: linux
+    env: MAKE_TASK=buildWorkerVerificationOpenshift  # not multi-arch yet
+  - os: linux
+    env: MAKE_TASK=buildWorkerVerificationRhelIks  # not multi-arch yet
+  fast_finish: true
+  allow_failures:
+  - os: linux-ppc64le
+  - os: linux-s390
+dist: bionic
+services:
+  - docker
 before_install:
-  - echo $TRAVIS_COMMIT
-  - echo $TRAVIS_TAG
-  - echo $TRAVIS_BRANCH
-  - echo $TRAVIS_BUILD_NUMBER
-  - echo $TRAVIS_REPO_SLUG
-notifications:
-  email:
-    - tahsin@travis-ci.org
+  - sudo apt-get update
+  - sudo apt-get install build-essential libffi-dev libssl-dev python3-pip
+install:
+  - pip3 install ansible
+  - pip3 install 'requests[security]' # removes openSSL warnings
+  - pip3 install -r test-requirements.txt >/dev/null
+  - curl -s https://s3-api.us-geo.objectstorage.softlayer.net/armada-config/build-tools/build-tools.tar.gz |tar -xvz
+  - ./build-tools/install.sh
+script:
+  - make $MAKE_TASK
